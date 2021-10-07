@@ -89,12 +89,13 @@ def select_update(update: Update, context: CallbackContext) -> None:
     user = update.message.from_user
     chat = update.effective_chat
     text = update.message.text
+    logger.info(user.id)
 
     if chat.id != CHAT_ID:
         return
 
     try:
-        output = requests.options('https://leetcode-rating.herokuapp.com/update-scores').json()
+        output = requests.options('https://leetcode-rating.herokuapp.com/update-scores').headers
     except:
         update.message.reply_text("Ошибка, хз мой создатель тупее меня самого")
         return
@@ -150,10 +151,10 @@ def main() -> None:
     dispatcher = updater.dispatcher
     logs_handlers = [
 #        CommandHandler("stats", select_stats, Filters.chat_type.groups),
-        CommandHandler("top", select_top, Filters.chat_type.groups),
-        CommandHandler("update", select_update, Filters.chat_type.groups),
-        CommandHandler("tail", select_tail, Filters.chat_type.groups),
-        CommandHandler("me", select_me, Filters.chat_type.groups),
+        CommandHandler("top", select_top),
+        CommandHandler("update", select_update),
+        CommandHandler("tail", select_tail),
+        CommandHandler("me", select_me),
         ]
 
     for i in logs_handlers:
